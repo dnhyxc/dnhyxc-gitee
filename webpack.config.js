@@ -14,7 +14,7 @@ module.exports = {
   },
 
   // 生产模式下关闭map文件
-  // devtool: devMode ? "none" : "source-map",
+  devtool: devMode ? "source-map" : "none",
 
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
@@ -41,6 +41,9 @@ module.exports = {
             }
           },
           {
+            loader: "postcss-loader",
+          },
+          {
             loader: 'less-loader',
             options: {
               lessOptions: {
@@ -52,22 +55,16 @@ module.exports = {
               }
             }
           },
-          {
-            loader: 'postcss-loader',
-          },
         ]
       },
       {
-        test: /\.jsx?$/, // jsx/js文件的正则
-        exclude: /node_modules/, // 排除 node_modules 文件夹
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         use: {
-          // loader 是 babel
           loader: 'babel-loader',
           options: {
-            // babel 转义的配置选项
             babelrc: false,
             presets: [
-              // 添加 preset-react
               require.resolve('@babel/preset-react'),
               [
                 require.resolve('@babel/preset-env'),
@@ -151,27 +148,21 @@ module.exports = {
     // "react": "React",
     // "react-dom": "ReactDOM"
   },
-  // mode: 'production',
-  mode: 'development',
   devServer: {
     port: 9200,
     host: 'localhost',
-    open: true,
-    hot: true,
-    contentBase: path.resolve(__dirname, 'build'),
-    watchContentBase: true,
-    watchOptions: {
-      ignored: /node_modules/
-    },
+    // open: true,
+    disableHostCheck: true,
+    historyApiFallback: true,
+    // hot: true,
     compress: true,
-    clientLogLevel: 'none',
+    // clientLogLevel: 'none',
     quiet: true,
-    overlay: false,
     proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        '^api': ''
-      }
+      // '/api': {
+      //   target: 'http://localhost:3000',
+      //   '^api': ''
+      // }
     }
   }
 };
