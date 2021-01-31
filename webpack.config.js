@@ -27,6 +27,40 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(js|jsx|ts|tsx)$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ["@babel/preset-env", {
+                  modules: false,
+                }],
+                "@babel/preset-react",
+              ],
+              plugins: [
+                ['@babel/plugin-transform-runtime', {
+                  useESModules: true,
+                }],
+              ],
+            },
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              happyPackMode: true,
+              transpileOnly: true,
+              compilerOptions: {
+                noEmit: false,
+                module: 'esnext',
+                target: devMode ? 'es2017' : 'es5',
+              },
+            },
+          },
+        ],
+        exclude: [/node_modules/],
+      },
+      {
         test: /\.(css|less)$/,
         use: [
           devMode ? MiniCssExtractPlugin.loader : 'style-loader',
@@ -56,48 +90,6 @@ module.exports = {
             },
           },
         ],
-      },
-      {
-        test: /\.m?js$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                // ["@babel/preset-env", {
-                //   modules: false,
-                // }],
-                "@babel/preset-env", "@babel/preset-react",
-              ],
-              plugins: [
-                ['@babel/plugin-transform-runtime', {
-                  useESModules: true,
-                }],
-                ['import', {
-                  libraryName: 'antd', libraryDirectory: 'es', style: true
-                }],
-              ],
-            },
-          },
-        ],
-        exclude: [/node_modules/],
-      },
-      {
-        test: /\.tsx$/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              happyPackMode: true,
-              transpileOnly: true,
-              compilerOptions: {
-                noEmit: false,
-                module: 'esnext',
-                target: devMode ? 'es2017' : 'es5',
-              },
-            },
-          },
-        ]
       },
       {
         test: /\.svg$/,
@@ -137,11 +129,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(__dirname, './public/index.html'),
-      // minify: {
-      //   removeComments: true, // 移除注释
-      //   collapseWhitespace: true, // 移除空格
-      // }
+      // template: path.resolve(__dirname, './public/index.html'),
+      template: path.resolve(__dirname, './src/index.ejs'),
+      minify: {
+        removeComments: true, // 移除注释
+        collapseWhitespace: true, // 移除空格
+      }
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
@@ -156,7 +149,7 @@ module.exports = {
   devServer: {
     port: 9200,
     host: 'localhost',
-    open: true,
+    // open: true,
     disableHostCheck: true,
     historyApiFallback: true,
     // hot: true,
