@@ -27,7 +27,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css|less$/,
+        test: /\.(css|less)$/,
         use: [
           devMode ? MiniCssExtractPlugin.loader : 'style-loader',
           {
@@ -38,56 +38,66 @@ module.exports = {
                 localIdentName: '[name]__[local]--[hash:base64:5]',
               },
               importLoaders: 1,
-            }
+            },
           },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
           },
           {
             loader: 'less-loader',
             options: {
               lessOptions: {
-                modifyVars: {
-                  "primary-color": "#009688",
-                  "menu-item-active-bg": "#009688",
-                },
+                // modifyVars: {
+                //   'primary-color': 'green',
+                //   'menu-item-active-bg': 'green',
+                // },
                 javascriptEnabled: true,
-              }
-            }
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.m?js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                // ["@babel/preset-env", {
+                //   modules: false,
+                // }],
+                "@babel/preset-env", "@babel/preset-react",
+              ],
+              plugins: [
+                ['@babel/plugin-transform-runtime', {
+                  useESModules: true,
+                }],
+                ['import', {
+                  libraryName: 'antd', libraryDirectory: 'es', style: true
+                }],
+              ],
+            },
+          },
+        ],
+        exclude: [/node_modules/],
+      },
+      {
+        test: /\.tsx$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              happyPackMode: true,
+              transpileOnly: true,
+              compilerOptions: {
+                noEmit: false,
+                module: 'esnext',
+                target: devMode ? 'es2017' : 'es5',
+              },
+            },
           },
         ]
-      },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            babelrc: false,
-            presets: [
-              require.resolve('@babel/preset-react'),
-              [
-                require.resolve('@babel/preset-env'),
-                {
-                  modules: false
-                }
-              ]
-            ],
-            cacheDirectory: true
-          }
-        }
-      },
-      {
-        test: /\.tsx?$/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            presets: ["@babel/env", "@babel/react", '@babel/preset-typescript'],
-            plugins: [
-              ['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }],
-            ]
-          }
-        }]
       },
       {
         test: /\.svg$/,
@@ -122,21 +132,16 @@ module.exports = {
         test: /\.html$/,
         loader: 'html-loader'
       }
-      // isPro ? null : {
-      //   enforce: "pre",
-      //   test: /\.js|ts|tsx$/,
-      //   loader: "source-map-loader"
-      // }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, './public/index.html'),
-      minify: {
-        removeComments: true, // 移除注释
-        collapseWhitespace: true, // 移除空格
-      }
+      // minify: {
+      //   removeComments: true, // 移除注释
+      //   collapseWhitespace: true, // 移除空格
+      // }
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
@@ -151,13 +156,13 @@ module.exports = {
   devServer: {
     port: 9200,
     host: 'localhost',
-    // open: true,
+    open: true,
     disableHostCheck: true,
     historyApiFallback: true,
     // hot: true,
     compress: true,
-    // clientLogLevel: 'none',
-    quiet: true,
+    clientLogLevel: 'none',
+    quiet: false,
     proxy: {
       // '/api': {
       //   target: 'http://localhost:3000',
