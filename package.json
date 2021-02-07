@@ -1,17 +1,38 @@
 {
-  "name": "dnhyxc",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@dnhyxc/react-cli",
+  "version": "0.0.1",
+  "author": "dengninghai",
+  "main": "./build/bundle.js",
+  "bin": {
+    "react-cli": "bin/main.js"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.11.2",
+    "chalk": "^4.1.0",
+    "commander": "^7.0.0",
+    "download-git-repo": "^3.0.2",
+    "execa": "^5.0.0",
+    "fs-extra": "^9.1.0",
+    "import-global": "^0.1.0",
+    "inquirer": "^7.3.3",
+    "lru-cache": "^6.0.0",
+    "minimist": "^1.2.5",
+    "nunjucks": "^3.2.2",
+    "ora": "^5.3.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "request-promise-native": "^1.0.9",
+    "semver": "^7.3.4",
+    "simple-git": "^2.32.0",
+    "string.prototype.padstart": "^3.1.1",
     "typescript": "^4.1.3",
+    "valid-filename": "^3.1.0",
+    "validate-npm-package-name": "^3.0.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -21,6 +42,17 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "engines": {
+    "node": ">=8.9"
+  },
+  "keywords": [
+    "react",
+    "webpack",
+    "antd",
+    "typeScript",
+    "ts",
+    "tsconfig"
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -72,6 +104,6 @@
     "url-loader": "^4.1.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.11.2"
   }
 }
